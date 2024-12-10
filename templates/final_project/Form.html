@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>New Student Admission</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+    .form-container {
+        width: 80%;
+        margin: 0 auto;
+        background-color: darkgray; /* Dark gray background for the form */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+    h1 {
+        text-align: center;
+        color: #fff; /* White text for better contrast */
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    label {
+        font-weight: bold;
+        color: #ddd; /* Light gray text for labels */
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    input[type="file"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+    }
+    input[type="submit"] {
+        background-color: black;
+        color: white;
+        padding: 15px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .table_style {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+    }
+    .table_style th,
+    .table_style td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    .table_style th {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .table_style td a {
+        color: #007BFF;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .table_style td a:hover {
+        text-decoration: underline;
+    }
+    .table_style td button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .table_style td button:hover {
+        background-color: #e53935;
+    }
+    .center-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .center-link a {
+        color: #007BFF;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .center-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1>New Student Admission List</h1>
+    <form action="/final_project" method="POST" enctype="multipart/form-data">
+
+        <label for="pTask">Student Name:</label><br/>
+        <input type="text" name="pTask" id="pTask" required><br><br> 
+
+        <!-- Dropdown for student role -->
+        <label for="task-type">Student Dept:</label><br/>
+        <select id="task-type" name="task_type" required>
+            <option value="">Select Student Role</option>
+            <option value="CSE">CSE</option>
+            <option value="IT">IT</option>
+            <option value="ECE">ECE</option>
+        </select>
+        <br><br> 
+
+        <label for="pr">Rank (1-5):</label><br/>
+        <input type="number" name="pr" id="pr" min="1" max="5" required><br><br> 
+
+        <label for="due-date">Joining Date:</label><br/>
+        <input type="date" id="due-date" name="due_date" required><br><br>
+        
+        <!-- File Upload -->
+        <label for="file-upload">Upload Certificates:</label><br/>
+        <input type="file" id="file-upload" name="file_upload" required><br><br>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Add Student" id="sub">
+    </form>
+    
+    <h1>Existing Students</h1>
+    {% if projects|length < 1 %}
+        <h4 style="text-align: center">There are no students found. Add new students!</h4>
+    {% else %}
+        <table class="table_style">
+            <tr>
+                <th><a href="?sort_column=priority">Student Name</a></th>
+                <th><a href="?sort_column=category">Student Role</a></th>
+                <th><a href="?sort_column=due_date">Joining Date</a></th>
+                <th>Proficiency Level</th>
+                <th>Board Certificates</th>
+                <th>Actions</th>
+            </tr>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.task }}</td>
+                <td>{{ project.category }}</td>
+                <td>{{ project.due_date }}</td>
+                <td>{{ project.priority }}</td>
+                <td>
+                    <a href="{{ url_for('static', filename='uploads/' + project.file_name) }}">
+                        <img src="{{ url_for('static', filename='uploads/' + project.file_name) }}" alt="{{ project.file_name }}" style="max-width: 50px; max-height: 50px;">
+                    </a>
+                </td>
+                <td>
+                    <a href="/update_form/{{ project.id }}" style="padding-bottom: 10px;">Update</a>
+                    <br>
+                    <form action="/delete_form/{{ project.id }}" method="POST" style="display: inline;">
+                        <button type="submit" id="del">Delete</button>
+                    </form>
+                </td>
+            </tr> 
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+
+<div class="center-link">
+    <a href="/">Go back to homepage</a>
+</div>
+
+{% endblock %}

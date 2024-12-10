@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="form-container">
+    <h1>Update Student Details</h1>
+    <form action="/update_form/{{ project.id }}" method="POST" enctype="multipart/form-data">
+        <label for="pTask">Student Name:</label>
+        <input type="text" name="pTask" id="pTask" value="{{ project.task }}" required>
+
+        <label for="task-type">Student Dept:</label>
+        <select id="task-type" name="task_type" required>
+            <option value="CSE" {% if project.category == "CSE" %}selected{% endif %}>CSE</option>
+            <option value="IT" {% if project.category == "IT" %}selected{% endif %}>IT</option>
+            <option value="ECE" {% if project.category == "ECE" %}selected{% endif %}>ECE</option>
+        </select>
+
+        <label for="pr">Rank (1-5):</label>
+        <input type="number" name="pr" id="pr" value="{{ project.priority }}" min="1" max="5" required>
+
+        <label for="due-date">Joining Date:</label>
+        <input type="date" id="due-date" name="due_date" value="{{ project.due_date }}" required>
+
+        <label for="file-upload">Upload Certificates:</label>
+        <input type="file" id="file-upload" name="file_upload">
+
+        <button type="submit">Update Student</button>
+    </form>
+</div>
+
+<div class="center-link">
+    <a href="/">Go back to homepage</a>
+</div>
+{% endblock %}

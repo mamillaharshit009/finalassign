@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Master</title>
+    <style>
+        /* General Styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .content {
+            margin: 40px auto;
+            width: 90%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Heading Styling */
+        .content h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .content h4 {
+            font-size: 18px;
+            color: #777;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f7f7f7;
+        }
+
+        tr:hover td {
+            background-color: #eaeaea;
+        }
+
+        a {
+            color: #4caf50;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        a:hover {
+            color: #388e3c;
+            text-decoration: underline;
+        }
+
+        /* Form Styling */
+        .form {
+            margin-top: 20px;
+            padding: 20px;
+            background: #4caf50;
+            border-radius: 10px;
+            color: #fff;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin: 0 10px 0 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form input[type="text"]:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .form input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .form input[type="submit"]:hover {
+            background-color: #388e3c;
+            color: #ffffff;
+        }
+
+        /* Back link */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            font-size: 16px;
+            color: #4caf50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            color: #388e3c;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Task Master</h1>
+        {% if tasks|length < 1 %}
+        <h4>There are no tasks. Create one below!</h4>
+        {% else %}
+        <table>
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.date_created.date() }}</td>
+                    <td>
+                        <a href="/delete/{{task.id}}">Delete</a>
+                        <br>
+                        <a href="/update/{{task.id}}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        <div class="form">
+            <form action="/assignment" method="POST">
+                <input type="text" name="content" id="content" placeholder="Enter a new task">
+                <input type="submit" value="Add Task">
+            </form>
+        </div>
+    </div>
+
+    <div class="back-link">
+        <a href="/">Go back to homepage</a>
+    </div>
+</body>
+</html>
